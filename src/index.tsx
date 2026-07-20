@@ -23,22 +23,47 @@ app.get('/year/:year/month/:month/tenant/list/', async (c) => {
   const { year, month } = c.req.param()
   const period = createPeriod(Number(month), Number(year))
   const tenants = TenantService.listTenants()
-  console.log(tenants)
   return c.html(
-    <table>
-      <thead>
-      <th>Razon Social</th>
-      <th>RUC</th>
-      <th>Nombre Comercial</th>
-      <th>Ubicación</th>
-      <th>Acciones</th>
-      </thead>
-      <tbody>
-        {tenants.map((tenant) => (
-          <TenantRow tenant={tenant} url={`/year/${period.year}/month/${period.month}/tenant/${tenant.id}/sales-report/create/`} ></TenantRow>
-        ))}
-      </tbody>
-    </table>
+    <html lang="es" data-theme="light">
+      <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <title>Monthly Py</title>
+        <link href="https://cdn.jsdelivr.net/npm/daisyui@5" rel="stylesheet" type="text/css" />
+        <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+        <link href="https://cdn.jsdelivr.net/npm/daisyui@5/themes.css" rel="stylesheet" type="text/css" />
+      </head>
+      <body class="min-h-screen bg-base-200 p-6">
+        <div class="mx-auto max-w-7xl">
+          <div class="mb-6">
+            <h1 class="text-3xl font-bold">Locales — {period.month}/{period.year}</h1>
+            <p class="mt-1 opacity-60">Selecciona un local para registrar su reporte de ventas</p>
+          </div>
+          <div class="card bg-base-100 shadow-xl">
+            <div class="card-body gap-4">
+              <div class="overflow-x-auto">
+                <table class="table">
+                  <thead>
+                    <tr>
+                      <th>Razón Social</th>
+                      <th>RUC</th>
+                      <th>Nombre Comercial</th>
+                      <th>Ubicación</th>
+                      <th class="text-right">Acciones</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {tenants.map((tenant) => (
+                      <TenantRow tenant={tenant} url={`/year/${period.year}/month/${period.month}/tenant/${tenant.id}/sales-report/create/`}></TenantRow>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </body>
+    </html>
   )
 })
 

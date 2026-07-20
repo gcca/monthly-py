@@ -8,12 +8,14 @@ type TenantRowProps = {
 
 export const TenantRow: FC<TenantRowProps> = ({ tenant, url }) => {
   return (
-    <tr>
+    <tr class="hover">
       <td>{tenant.tenantName}</td>
       <td>{tenant.documentNumber}</td>
       <td>{tenant.brandName}</td>
       <td>{tenant.locationName}</td>
-      <td><a href={url}>go</a></td>
+      <td class="text-right">
+        <a href={url} class="btn btn-sm btn-primary">Registrar ventas</a>
+      </td>
     </tr>
   )
 }
