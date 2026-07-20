@@ -1,0 +1,18 @@
+services:
+  monthly-py:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: execute
+    image: monthly-py:latest
+    environment:
+      TZ: UTC
+      DB_URL: /app/data/monthly-py.db
+    ports:
+      - "3000:3000"
+    volumes:
+      - data:/app/data
+    restart: unless-stopped
+
+volumes:
+  data:

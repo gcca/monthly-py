@@ -1,0 +1,30 @@
+app = 'monthly-py'
+primary_region = 'ord'
+
+[build]
+  image = 'ghcr.io/jose-mrqz/monthly-py:latest'
+
+[env]
+  DB_URL = '/app/data/monthly-py.db'
+  TZ = 'UTC'
+
+[[mounts]]
+  source = 'monthly_py_data'
+  destination = '/app/data'
+
+[http_service]
+  internal_port = 3000
+  force_https = true
+  auto_stop_machines = 'stop'
+  auto_start_machines = true
+  min_machines_running = 0
+
+  [http_service.concurrency]
+    type = 'requests'
+    hard_limit = 100
+    soft_limit = 80
+
+[[vm]]
+  size = 'shared-cpu-1x'
+  memory = '256mb'
+  cpus = 1
