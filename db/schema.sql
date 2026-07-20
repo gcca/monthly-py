@@ -10,7 +10,7 @@ CREATE TABLE tenant (
   brand_name text,
   location_name text,
   document_number text,
-  report_kind integer,
+  report_kind integer not null references report_kind(id),
   created_at text default current_timestamp
 );
 CREATE TABLE report_kind (
@@ -31,8 +31,7 @@ CREATE TABLE sale_report (
   transactions integer,
   modules_amount real,
   modules_transactions integer,
-  report_kind text not null,
-  tenant_id integer not null,
+  tenant_id integer not null references tenant(id),
   created_at text default current_timestamp
 );
 -- Dbmate schema migrations
