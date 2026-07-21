@@ -1,10 +1,62 @@
 import { Hono, Context } from 'hono'
+import { db } from '../db'
 
 export function initialize_handlers(app: Hono): void {
   app.get('/monthly-py/auth/signin', signin_get);
   app.post('/monthly-py/auth/signin', signin_post);
 }
 
+async function signin_get(c: Context) {
+  const error = c.req.query('error')
+  return c.html(<SigninPage error={error} />)
+}
+
+async function signin_post(c: Context) {
+  const formData = await c.req.formData()
+  const username = String(formData.get('username') ?? '').trim()
+  const password = String(formData.get('password') ?? '').trim()
+
+  if (!username || !password) {
+    return c.html(
+      <SigninPage error="Usuario y contraseña son obligatorios" username={username} />
+    )
+  }
+
+  if (!(await authenticate(username, password))) {
+    return c.html(
+      <SigninPage error="Usuario o contraseña incorrectos" username={username} />
+    )
+  }
+
+  return c.redirect('/')
+}
+
+type UserRow = {
+  id: number
+  username: string
+  password: string
+}
+
+async function hash_password(password: string): Promise<string> {
+  return Bun.password.hash(password)
+}
+
+async function verify_password(password: string, hash: string): Promise<boolean> {
+  return Bun.password.verify(password, hash)
+}
+
+function find_user_by_username(username: string): UserRow | null {
+  const query = `select id, username, password from user where username = $username limit 1`
+  return db.query(query).get({ $username: username }) as UserRow | null
+}
+
+async function authenticate(username: string, password: string): Promise<boolean> {
+  const user = find_user_by_username(username)
+  if (!user) return false
+  return verify_password(password, user.password)
+}
+
+// TODO: move this to state interaction of jsx.
 const SIGNIN_SCRIPT = `
 document.addEventListener('DOMContentLoaded', function () {
   var form = document.getElementById('signin-form');
@@ -149,23 +201,4 @@ function SigninPage({ error, username }: SigninPageProps) {
       </body>
     </html>
   )
-}
-
-async function signin_get(c: Context) {
-  const error = c.req.query('error')
-  return c.html(<SigninPage error={error} />)
-}
-
-async function signin_post(c: Context) {
-  const formData = await c.req.formData()
-  const username = String(formData.get('username') ?? '').trim()
-  const password = String(formData.get('password') ?? '').trim()
-
-  if (!username || !password) {
-    return c.html(
-      <SigninPage error="Usuario y contraseña son obligatorios" username={username} />
-    )
-  }
-
-  return c.redirect('/')
 }

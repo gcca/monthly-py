@@ -2,6 +2,7 @@
 create table user (
   id integer primary key autoincrement,
   username text not null,
+  password text not null,
   created_at text default current_timestamp
 );
 

@@ -6,9 +6,9 @@ VALUES
   (3, 'monthly_amount', 'Mensual monto', 0, 1, 0, 0, 0),
   (4, 'monthly_amount_transactions_modules', 'Mensual monto + transacciones + módulos', 0, 1, 1, 1, 1);
 
-INSERT INTO user (username) VALUES
-  ('admin'),
-  ('operador');
+INSERT INTO user (username, password) VALUES
+  ('chris.redfield', '$argon2id$v=19$m=65536,t=2,p=1$bMdLXP/jnrgPM5NnffmnrJg/ClJV4V8eu/dDYNum4wY$PQYNyppW99V8BnicMYCPMmAAu5YcXQRq1Ai1oLcecy0'),
+  ('jill.valentine', '$argon2id$v=19$m=65536,t=2,p=1$bMdLXP/jnrgPM5NnffmnrJg/ClJV4V8eu/dDYNum4wY$PQYNyppW99V8BnicMYCPMmAAu5YcXQRq1Ai1oLcecy0');
 
 INSERT INTO tenant (tenant_name, brand_name, location_name, document_number, report_kind) VALUES
   ('Cafetería El Aroma S.A.C.', 'El Aroma Café', 'Nivel 1 - Local 105', '20100123451', (SELECT id FROM report_kind WHERE name = 'daily' LIMIT 1)),
