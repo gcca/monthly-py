@@ -37,7 +37,7 @@ type UserRow = {
   password: string
 }
 
-async function hash_password(password: string): Promise<string> {
+export async function hash_password(password: string): Promise<string> {
   return Bun.password.hash(password)
 }
 
