@@ -6,17 +6,22 @@ import { TenantRow } from './components/TenantRow';
 import { SalesReportForm } from './components/SalesReportForm';
 import { createPeriod, Period, ReportKind, Sale, SaleDTO } from './types'
 
-const app = new Hono()
+import { initialize_handlers as initialize_auth_handlers } from './handlers/auth'
+
+const app = new Hono();
 
 
 app.get('/', (c) => {
-  return c.redirect('/year/2025/month/08/tenant/list/');
+  return c.redirect('/monthly-py/auth/signin');
 });
 
 
 app.get('/healthcheck/', (c) => {
   return c.json({ status: 'ok', message: 'cheers 🍻' })
 })
+
+
+initialize_auth_handlers(app);
 
 
 app.get('/year/:year/month/:month/tenant/list/', async (c) => {
