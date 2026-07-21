@@ -1,26 +1,24 @@
 import type { FC, Child } from 'hono/jsx'
 
 type LayoutProps = {
-    title?: string
-    children?: Child
+  title?: string
+  lang?: string
+  theme?: string
+  children?: Child
 }
 
-
-const Title: FC = () => {
+export const Layout: FC<LayoutProps> = ({ title = 'Monthly Py', lang = 'es', theme = 'light', children }) => {
   return (
-    <h1>Hello, World Test!</h1>
-  )
-}
-
-
-export const Layout: FC<LayoutProps> = ({ children }) => {
-  return (
-    <html>
+    <html lang={lang} data-theme={theme}>
       <head>
-        <title>Monthly Py</title>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <title>{title}</title>
+        <link href="https://cdn.jsdelivr.net/npm/daisyui@5" rel="stylesheet" type="text/css" />
+        <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+        <link href="https://cdn.jsdelivr.net/npm/daisyui@5/themes.css" rel="stylesheet" type="text/css" />
       </head>
-      <body>
-        <Title></Title>
+      <body class="min-h-screen bg-base-200 p-6">
         {children}
       </body>
     </html>
