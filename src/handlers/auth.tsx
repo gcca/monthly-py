@@ -1,9 +1,11 @@
 import { Hono, Context } from 'hono'
 import { db } from '../db'
+import { initialize_o365_handlers } from './auth/o365'
 
 export function initialize_handlers(app: Hono): void {
   app.get('/monthly-py/auth/signin/', signin_get);
   app.post('/monthly-py/auth/signin/', signin_post);
+  initialize_o365_handlers(app);
 }
 
 async function signin_get(c: Context) {
@@ -45,7 +47,7 @@ async function verify_password(password: string, hash: string): Promise<boolean>
   return Bun.password.verify(password, hash)
 }
 
-function find_user_by_username(username: string): UserRow | null {
+export function find_user_by_username(username: string): UserRow | null {
   const query = `select id, username, password from user where username = $username limit 1`
   return db.query(query).get({ $username: username }) as UserRow | null
 }
@@ -189,6 +191,19 @@ function SigninPage({ error, username }: SigninPageProps) {
                       <span id="signin-submit-label">Iniciar sesión</span>
                     </button>
                   </form>
+
+                  <div class="divider text-xs opacity-60">o</div>
+
+                  <a href="/monthly-py/auth/o365/signin/" class="btn btn-outline btn-block gap-2">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 23 23" class="h-5 w-5" aria-hidden="true">
+                      <path fill="#f3f3f3" d="M0 0h23v23H0z" />
+                      <path fill="#f35325" d="M1 1h10v10H1z" />
+                      <path fill="#81bc06" d="M12 1h10v10H12z" />
+                      <path fill="#05a6f0" d="M1 12h10v10H1z" />
+                      <path fill="#ffba08" d="M12 12h10v10H12z" />
+                    </svg>
+                    Iniciar sesión con Office 365
+                  </a>
 
                   <p class="text-center text-xs opacity-60">
                     Contacta a tu administrador si necesitas acceso.
