@@ -65,13 +65,18 @@ app.get('/year/:year/month/:month/tenant/:tenantId/sales-report/create/', async 
   const reportKind = TenantService.getTenantReportKind(Number(tenantId))
 
   const formProps = {
+    tenant: tenant!,
     reportKind: reportKind,
     period: period,
     form: {},
     errors: {},
   }
 
-  return c.html(<SalesReportForm {...formProps}></SalesReportForm>)
+  return c.html(
+    <Layout>
+      <SalesReportForm {...formProps}></SalesReportForm>
+    </Layout>
+  )
 })
 
 
@@ -147,6 +152,7 @@ const validateAndParseDailyReportForm = (period: Period, reportKind: ReportKind,
 app.post('/year/:year/month/:month/tenant/:tenantId/sales-report/create/', async (c) => {
   const { tenantId, year, month } = c.req.param()
   const period = createPeriod(Number(month), Number(year))
+  const tenant = TenantService.getTenantById(Number(tenantId))
   const reportKind = TenantService.getTenantReportKind(Number(tenantId))
   const formData = await c.req.formData()
 
@@ -155,12 +161,17 @@ app.post('/year/:year/month/:month/tenant/:tenantId/sales-report/create/', async
 
   if (Object.keys(errors).length > 0) {
     const formProps = {
+      tenant: tenant!,
       reportKind: reportKind,
       period: period,
       form: Object.fromEntries(formData.entries()),
       errors: errors,
     }
-    return c.html(<SalesReportForm {...formProps}></SalesReportForm>)
+    return c.html(
+      <Layout>
+        <SalesReportForm {...formProps}></SalesReportForm>
+      </Layout>
+    )
   }
 
   console.log('Validated data:', data)
