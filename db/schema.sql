@@ -2,6 +2,7 @@ CREATE TABLE IF NOT EXISTS "schema_migrations" (version varchar(128) primary key
 CREATE TABLE user (
   id integer primary key autoincrement,
   username text not null,
+  password text not null,
   created_at text default current_timestamp
 );
 CREATE TABLE tenant (
