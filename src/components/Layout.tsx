@@ -4,11 +4,10 @@ type LayoutProps = {
   title?: string
   lang?: string
   theme?: string
-  fullBleed?: boolean
   children?: Child
 }
 
-export const Layout: FC<LayoutProps> = ({ title = 'Monthly Py', lang = 'es', theme = 'light', fullBleed = false, children }) => {
+export const Layout: FC<LayoutProps> = ({ title = 'Monthly Py', lang = 'es', theme = 'light', children }) => {
   return (
     <html lang={lang} data-theme={theme}>
       <head>
@@ -19,7 +18,7 @@ export const Layout: FC<LayoutProps> = ({ title = 'Monthly Py', lang = 'es', the
         <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
         <link href="https://cdn.jsdelivr.net/npm/daisyui@5/themes.css" rel="stylesheet" type="text/css" />
       </head>
-      <body class={fullBleed ? 'min-h-screen bg-base-200' : 'min-h-screen bg-base-200 p-4 sm:p-6'}>
+      <body class="min-h-screen bg-base-200 p-4 sm:p-6">
         {children}
       </body>
     </html>
