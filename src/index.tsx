@@ -12,7 +12,7 @@ const app = new Hono();
 
 
 app.get('/', (c) => {
-  return c.redirect('/monthly-py/auth/signin');
+  return c.redirect('/monthly-py/auth/signin/');
 });
 
 

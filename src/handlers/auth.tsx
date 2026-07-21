@@ -2,8 +2,8 @@ import { Hono, Context } from 'hono'
 import { db } from '../db'
 
 export function initialize_handlers(app: Hono): void {
-  app.get('/monthly-py/auth/signin', signin_get);
-  app.post('/monthly-py/auth/signin', signin_post);
+  app.get('/monthly-py/auth/signin/', signin_get);
+  app.post('/monthly-py/auth/signin/', signin_post);
 }
 
 async function signin_get(c: Context) {
@@ -28,7 +28,7 @@ async function signin_post(c: Context) {
     )
   }
 
-  return c.redirect('/')
+  return c.redirect('/year/2025/month/08/tenant/list/')
 }
 
 type UserRow = {
@@ -153,7 +153,7 @@ function SigninPage({ error, username }: SigninPageProps) {
                     )}
                   </div>
 
-                  <form id="signin-form" method="post" action="/monthly-py/auth/signin" class="space-y-4">
+                  <form id="signin-form" method="post" class="space-y-4">
                     <label class="form-control w-full">
                       <div class="label">
                         <span class="label-text">Usuario</span>
