@@ -150,7 +150,8 @@ async function o365_validate_post(c: Context) {
     }
   }
 
-  return c.json({ status: 'ok', redirect: '/' })
+  // FIXME: Compute year-month for today's URL.
+  return c.json({ status: 'ok', redirect: '/year/2025/month/08/tenant/list/' })
 }
 
 const O365_POLL_SCRIPT = `

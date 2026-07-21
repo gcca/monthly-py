@@ -30,6 +30,7 @@ async function signin_post(c: Context) {
     )
   }
 
+  // FIXME: Compute year-month for today's URL.
   return c.redirect('/year/2025/month/08/tenant/list/')
 }
 
