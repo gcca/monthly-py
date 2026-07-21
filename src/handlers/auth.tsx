@@ -1,7 +1,5 @@
 import { Hono, Context } from 'hono'
 
-import { Layout } from '../components/Layout'
-
 export function initialize_handlers(app: Hono): void {
   app.get('/monthly-py/auth/signin', signin_get);
   app.post('/monthly-py/auth/signin', signin_post);
@@ -40,106 +38,116 @@ type SigninPageProps = {
 
 function SigninPage({ error, username }: SigninPageProps) {
   return (
-    <Layout title="Monthly Py | Iniciar sesión" fullBleed>
-      <script dangerouslySetInnerHTML={{ __html: SIGNIN_SCRIPT }} />
-      <main class="hero min-h-screen px-4 py-8">
-        <div class="hero-content w-full max-w-6xl">
-          <div class="grid w-full grid-cols-1 items-center gap-8 lg:grid-cols-[1.05fr_0.95fr] lg:gap-12">
-            <section class="order-2 space-y-6 lg:order-1">
-              <div class="flex flex-wrap items-center gap-3">
-                <div class="badge badge-primary badge-lg">Monthly Py</div>
-                <div class="badge badge-outline">Reporte de ventas</div>
-              </div>
-
-              <div class="space-y-3">
-                <h1 class="text-4xl font-bold tracking-tight sm:text-5xl">
-                  Reporte de ventas de locales
-                </h1>
-                <p class="max-w-xl text-base leading-7 opacity-80 sm:text-lg">
-                  Ingresa para registrar y revisar los reportes de ventas mensuales
-                  y diarios de cada local del centro comercial.
-                </p>
-              </div>
-
-              <div class="stats stats-vertical shadow-sm lg:stats-horizontal">
-                <div class="stat">
-                  <div class="stat-title">Reportes</div>
-                  <div class="stat-value text-2xl">Mensual</div>
-                  <div class="stat-desc">y diario por local</div>
+    <html lang="es" data-theme="light">
+      <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <title>Monthly Py | Iniciar sesión</title>
+        <link href="https://cdn.jsdelivr.net/npm/daisyui@5" rel="stylesheet" type="text/css" />
+        <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+        <link href="https://cdn.jsdelivr.net/npm/daisyui@5/themes.css" rel="stylesheet" type="text/css" />
+        <script dangerouslySetInnerHTML={{ __html: SIGNIN_SCRIPT }} />
+      </head>
+      <body class="min-h-screen bg-base-200">
+        <main class="hero min-h-screen px-4 py-8">
+          <div class="hero-content w-full max-w-6xl">
+            <div class="grid w-full grid-cols-1 items-center gap-8 lg:grid-cols-[1.05fr_0.95fr] lg:gap-12">
+              <section class="order-2 space-y-6 lg:order-1">
+                <div class="flex flex-wrap items-center gap-3">
+                  <div class="badge badge-primary badge-lg">Monthly Py</div>
+                  <div class="badge badge-outline">Reporte de ventas</div>
                 </div>
-                <div class="stat">
-                  <div class="stat-title">Locales</div>
-                  <div class="stat-value text-2xl">Todos</div>
-                  <div class="stat-desc">en un solo panel</div>
-                </div>
-                <div class="stat">
-                  <div class="stat-title">Estado</div>
-                  <div class="stat-value text-2xl">Activo</div>
-                  <div class="stat-desc">centro comercial</div>
-                </div>
-              </div>
-            </section>
 
-            <section class="card order-1 w-full border border-base-300 bg-base-100 shadow-xl lg:order-2">
-              <div class="card-body gap-6">
-                <div class="space-y-2">
-                  <h2 class="card-title text-2xl">Bienvenido</h2>
-                  <p class="text-sm opacity-70">
-                    Ingresa tus credenciales para continuar.
+                <div class="space-y-3">
+                  <h1 class="text-4xl font-bold tracking-tight sm:text-5xl">
+                    Reporte de ventas de locales
+                  </h1>
+                  <p class="max-w-xl text-base leading-7 opacity-80 sm:text-lg">
+                    Ingresa para registrar y revisar los reportes de ventas mensuales
+                    y diarios de cada local del centro comercial.
                   </p>
-                  {error && (
-                    <div class="alert alert-error">
-                      <span>{error}</span>
-                    </div>
-                  )}
                 </div>
 
-                <form id="signin-form" method="post" action="/monthly-py/auth/signin" class="space-y-4">
-                  <label class="form-control w-full">
-                    <div class="label">
-                      <span class="label-text">Usuario</span>
-                    </div>
-                    <input
-                      name="username"
-                      autocomplete="username"
-                      autocapitalize="none"
-                      spellcheck={false}
-                      class="input input-bordered w-full"
-                      placeholder="tu.usuario"
-                      value={username ?? ''}
-                      required
-                    />
-                  </label>
+                <div class="stats stats-vertical shadow-sm lg:stats-horizontal">
+                  <div class="stat">
+                    <div class="stat-title">Reportes</div>
+                    <div class="stat-value text-2xl">Mensual</div>
+                    <div class="stat-desc">y diario por local</div>
+                  </div>
+                  <div class="stat">
+                    <div class="stat-title">Locales</div>
+                    <div class="stat-value text-2xl">Todos</div>
+                    <div class="stat-desc">en un solo panel</div>
+                  </div>
+                  <div class="stat">
+                    <div class="stat-title">Estado</div>
+                    <div class="stat-value text-2xl">Activo</div>
+                    <div class="stat-desc">centro comercial</div>
+                  </div>
+                </div>
+              </section>
 
-                  <label class="form-control w-full">
-                    <div class="label">
-                      <span class="label-text">Contraseña</span>
-                    </div>
-                    <input
-                      name="password"
-                      type="password"
-                      autocomplete="current-password"
-                      class="input input-bordered w-full"
-                      placeholder="••••••••"
-                      required
-                    />
-                  </label>
+              <section class="card order-1 w-full border border-base-300 bg-base-100 shadow-xl lg:order-2">
+                <div class="card-body gap-6">
+                  <div class="space-y-2">
+                    <h2 class="card-title text-2xl">Bienvenido</h2>
+                    <p class="text-sm opacity-70">
+                      Ingresa tus credenciales para continuar.
+                    </p>
+                    {error && (
+                      <div class="alert alert-error">
+                        <span>{error}</span>
+                      </div>
+                    )}
+                  </div>
 
-                  <button id="signin-submit" type="submit" aria-busy="false" class="btn btn-primary btn-block mt-2">
-                    <span id="signin-spinner" class="loading loading-spinner loading-sm hidden" aria-hidden="true"></span>
-                    <span id="signin-submit-label">Iniciar sesión</span>
-                  </button>
-                </form>
+                  <form id="signin-form" method="post" action="/monthly-py/auth/signin" class="space-y-4">
+                    <label class="form-control w-full">
+                      <div class="label">
+                        <span class="label-text">Usuario</span>
+                      </div>
+                      <input
+                        name="username"
+                        autocomplete="username"
+                        autocapitalize="none"
+                        spellcheck={false}
+                        class="input input-bordered w-full"
+                        placeholder="tu.usuario"
+                        value={username ?? ''}
+                        required
+                      />
+                    </label>
 
-                <p class="text-center text-xs opacity-60">
-                  Contacta a tu administrador si necesitas acceso.
-                </p>
-              </div>
-            </section>
+                    <label class="form-control w-full">
+                      <div class="label">
+                        <span class="label-text">Contraseña</span>
+                      </div>
+                      <input
+                        name="password"
+                        type="password"
+                        autocomplete="current-password"
+                        class="input input-bordered w-full"
+                        placeholder="••••••••"
+                        required
+                      />
+                    </label>
+
+                    <button id="signin-submit" type="submit" aria-busy="false" class="btn btn-primary btn-block mt-2">
+                      <span id="signin-spinner" class="loading loading-spinner loading-sm hidden" aria-hidden="true"></span>
+                      <span id="signin-submit-label">Iniciar sesión</span>
+                    </button>
+                  </form>
+
+                  <p class="text-center text-xs opacity-60">
+                    Contacta a tu administrador si necesitas acceso.
+                  </p>
+                </div>
+              </section>
+            </div>
           </div>
-        </div>
-      </main>
-    </Layout>
+        </main>
+      </body>
+    </html>
   )
 }
 
