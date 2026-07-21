@@ -6,17 +6,25 @@ ARG DBMATE_IMAGE=ghcr.io/amacneil/dbmate:2.34.1
 
 FROM ${DBMATE_IMAGE} AS dbmate
 
-FROM ${DEPS_IMAGE} AS deps
+FROM --platform=$BUILDPLATFORM ${DEPS_IMAGE} AS deps
 
 FROM deps AS build
+
+ARG TARGETARCH
 
 WORKDIR /src
 
 COPY package.json bun.lock tsconfig.json ./
 COPY src ./src
 
-RUN bun install --frozen-lockfile \
-    && bun build --compile --outfile monthly-py ./src/index.tsx
+RUN bun install --frozen-lockfile
+
+RUN case "${TARGETARCH}" in \
+        amd64) BUN_ARCH="x64" ;; \
+        arm64) BUN_ARCH="arm64" ;; \
+        *) echo "Unsupported architecture: ${TARGETARCH}" >&2; exit 1 ;; \
+    esac \
+    && bun build --compile --target="bun-linux-${BUN_ARCH}-musl" --outfile monthly-py ./src/index.tsx
 
 FROM alpine:${ALPINE_VERSION} AS execute
 
@@ -25,13 +33,16 @@ RUN apk add --no-cache \
     curl \
     libgcc \
     libstdc++ \
-    sqlite-libs
+    sqlite-libs \
+    sqlite
 
 WORKDIR /app
 
 COPY --from=build /src/monthly-py /usr/local/bin/monthly-py
 COPY --from=dbmate /usr/local/bin/dbmate /usr/local/bin/dbmate
 COPY db/migrations/*.sql /app/migrations/
+# FIXME: delete me.
+COPY db/fixtures/*.sql /app/fixtures/
 COPY docker-entrypoint.sh /usr/local/bin/monthly-py-entrypoint
 
 RUN chmod +x /usr/local/bin/monthly-py-entrypoint \

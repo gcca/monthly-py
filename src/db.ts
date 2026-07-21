@@ -9,5 +9,4 @@ const initDatabase = (dbPath: string) => {
 }
 
 
-// TODO: temporal fix. Move after testing
-export const db = initDatabase(`${import.meta.dir}/../data/monthly-py.db`)
+export const db = initDatabase(process.env.MONTHLY_PY_DATABASE_PATH ?? `${import.meta.dir}/../data/monthly-py.db`)
